@@ -43,6 +43,8 @@ header[data-testid="stHeader"] {{display: none;}}
 
 .insight {{background: #FFFBEB; border-left: 4px solid {YELLOW}; padding: 7px 12px;
   border-radius: 8px; color: #374151; font-size: 0.9rem;}}
+[data-testid="stPlotlyChart"], [data-testid="stPlotlyChart"] > div {{overflow: hidden !important;}}
+.banner {{margin-bottom: 8px;}}
 
 /* every chart becomes a white card */
 [data-testid="stPlotlyChart"] {{background: #FFFFFF; border-radius: 12px; padding: 4px;
