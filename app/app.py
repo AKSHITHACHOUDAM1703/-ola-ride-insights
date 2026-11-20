@@ -43,6 +43,8 @@ header[data-testid="stHeader"] {{display: none;}}
 
 .insight {{background: #FFFBEB; border-left: 4px solid {YELLOW}; padding: 7px 12px;
   border-radius: 8px; color: #374151; font-size: 0.9rem;}}
+[data-testid="stPlotlyChart"], [data-testid="stPlotlyChart"] > div {{overflow: hidden !important;}}
+.banner {{margin-bottom: 8px;}}
 
 /* every chart becomes a white card */
 [data-testid="stPlotlyChart"] {{background: #FFFFFF; border-radius: 12px; padding: 4px;
@@ -310,6 +312,7 @@ with tabs[6]:
     if POWERBI_URL:
         components.iframe(POWERBI_URL, height=650)
     else:
+
         folder = Path(__file__).resolve().parent.parent / "Dashboard"
         images = sorted(list(folder.glob("*.png")) + list(folder.glob("*.jpg")))
         if images:
@@ -318,3 +321,6 @@ with tabs[6]:
                 st.image(str(img), caption=img.stem)
         else:
             st.info("Add your Power BI page screenshots (.png) to the Dashboard folder.")
+=======
+        st.info("Publish your Power BI report, then paste its link into POWERBI_URL at the top of app.py.")
+>>>>>>> 65a8f666bb7dd666a3d85fe6f05c955f267e6eee
