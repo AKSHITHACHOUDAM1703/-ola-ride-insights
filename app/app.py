@@ -321,6 +321,6 @@ with tabs[6]:
                 st.image(str(img), caption=img.stem)
         else:
             st.info("Add your Power BI page screenshots (.png) to the Dashboard folder.")
-=======
+
         st.info("Publish your Power BI report, then paste its link into POWERBI_URL at the top of app.py.")
 
