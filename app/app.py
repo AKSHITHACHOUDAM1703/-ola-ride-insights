@@ -323,4 +323,4 @@ with tabs[6]:
             st.info("Add your Power BI page screenshots (.png) to the Dashboard folder.")
 =======
         st.info("Publish your Power BI report, then paste its link into POWERBI_URL at the top of app.py.")
->>>>>>> 65a8f666bb7dd666a3d85fe6f05c955f267e6eee
+
