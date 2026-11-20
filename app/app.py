@@ -8,9 +8,9 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="OLA Ride Insights", page_icon="🚕", layout="wide",
                    initial_sidebar_state="collapsed")
-
 # Optional: paste your Power BI "Publish to web" link here
 POWERBI_URL = ""
+
 
 # ---------------- Colors ----------------
 YELLOW, DARK, GREEN, RED, ORANGE, BLUE, GREY = (
@@ -168,7 +168,7 @@ def insight(text):
 is_cancel = df["Booking_Status"].str.contains("Cancel", case=False)
 c1, c2, c3, c4, c5 = st.columns(5)
 kpi(c1, "Total rides", f"{len(df):,}", BLUE)
-kpi(c2, "Total revenue", f"₹{df['Booking_Value'].sum():,.0f}", GREEN)
+kpi(c2, "Revenue (successful rides)", f"₹{df.loc[df['Booking_Status'] == 'Success', 'Booking_Value'].sum():,.0f}", GREEN)
 kpi(c3, "Avg ride distance", f"{df['Ride_Distance'].mean():.1f} km", YELLOW)
 kpi(c4, "Success rate", f"{(df['Booking_Status'] == 'Success').mean() * 100:.1f}%", GREEN)
 kpi(c5, "Cancellation rate", f"{is_cancel.mean() * 100:.1f}%", RED)
@@ -192,7 +192,8 @@ with tabs[0]:
 
     by_hour = df.groupby("Hour").size().reset_index(name="Rides")
     peak = by_hour.loc[by_hour["Rides"].idxmax(), "Hour"]
-    best_day = df["Day_Name"].value_counts().idxmax()
+    per_day = df.groupby("Day_Name")["Date"].apply(lambda s: s.dt.date.nunique())
+    best_day = (df["Day_Name"].value_counts() / per_day).idxmax()
     insight(f"Peak demand is around <b>{int(peak)}:00</b>, and <b>{best_day}</b> is the busiest day. "
             "Put more drivers on the road at these times.")
     a, b = st.columns(2)
@@ -302,9 +303,18 @@ with tabs[5]:
     right.dataframe(result.head(1000), height=300)
     right.download_button("⬇️ Download result as CSV", result.to_csv(index=False), "query_result.csv", "text/csv")
 
+
 # ---------------- Power BI ----------------
 with tabs[6]:
+    POWERBI_URL = ""
     if POWERBI_URL:
         components.iframe(POWERBI_URL, height=650)
     else:
-        st.info("Publish your Power BI report, then paste its link into POWERBI_URL at the top of app.py.")
+        folder = Path(__file__).resolve().parent.parent / "Dashboard"
+        images = sorted(list(folder.glob("*.png")) + list(folder.glob("*.jpg")))
+        if images:
+            st.caption("Power BI dashboard pages")
+            for img in images:
+                st.image(str(img), caption=img.stem)
+        else:
+            st.info("Add your Power BI page screenshots (.png) to the Dashboard folder.")
